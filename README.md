@@ -74,8 +74,8 @@ public static final Item BLOCK_ITEM = reg.blockItem(NEW_BLOCK);
 
 ### ❌
 ```java
-public static final Block NEW_BLOCK = reg.block("new_block");
 public static final Item BLOCK_ITEM = reg.blockItem(NEW_BLOCK);
+public static final Block NEW_BLOCK = reg.block("new_block");
 ```
 
 <br>
