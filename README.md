@@ -78,6 +78,12 @@ public static final Block NEW_BLOCK = reg.block("new_block");
 public static final Item BLOCK_ITEM = reg.blockItem(NEW_BLOCK);
 ```
 
+<br>
+
+---
+
+<br>
+
 ## Installation
 This library can be installed using [jitpack](https://jitpack.io/)
 
