@@ -2,6 +2,9 @@ plugins {
     id 'fabric-loom' version '1.7-SNAPSHOT'
 }
 
+group = project.group
+version = project.version
+
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.mappings_version}:v2"
