@@ -97,6 +97,8 @@ repositories {
 ```
 
 And add the dependency like this:
+```gradle
 dependencies {
   implementation 'com.github.PSJahn:PSRegistry:1.0.0'
 }
+```
