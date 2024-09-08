@@ -18,3 +18,9 @@ jobs:
         java-version: 21
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Store Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: artifact
+        path: |
+          build/libs
