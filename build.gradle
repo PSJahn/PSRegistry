@@ -3,7 +3,9 @@ plugins {
     id 'maven-publish'
 }
 
-group = project.group
+apply plugin: 'maven-publish'
+
+group = project.maven_group
 version = project.version
 
 dependencies {
@@ -15,6 +17,11 @@ dependencies {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.release = 21
+}
+
+java {
+    archivesBaseName = project.archives_base_name
+    withSourcesJar()
 }
 
 publishing {
