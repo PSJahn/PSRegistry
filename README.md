@@ -105,6 +105,6 @@ repositories {
 And add the dependency like this:
 ```gradle
 dependencies {
-  modImplementation "com.github.PSJahn:PSRegistry:1.2.0"
+  modImplementation "com.github.PSJahn:PSRegistry:1.2.7"
 }
 ```
