@@ -108,14 +108,18 @@ public class PSRegistry {
     //region Blocks
 
     public Block block(String name) {
-        return this.block(name, s -> s);
+        return this.block(name, s -> s, Block::new);
     }
 
     public Block block(String name, Function<AbstractBlock.Settings, AbstractBlock.Settings> settings) {
-        return this.block(name, new Block(settings.apply(AbstractBlock.Settings.create())));
+        return this.block(name, settings, Block::new);
     }
 
-    public Block block(String name, Block block) {
+    public <T extends Block> T block(String name, Function<AbstractBlock.Settings, AbstractBlock.Settings> settings, Function<AbstractBlock.Settings, T> constructor) {
+        return this.block(name, constructor.apply(settings.apply(AbstractBlock.Settings.create())));
+    }
+
+    public <T extends Block> T block(String name, T block) {
         return Registry.register(Registries.BLOCK, Identifier.of(namespace, name), block);
     }
 
