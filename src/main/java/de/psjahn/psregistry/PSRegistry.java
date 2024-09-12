@@ -3,6 +3,7 @@ package de.psjahn.psregistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
@@ -19,6 +20,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.poi.PointOfInterestType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -167,6 +169,18 @@ public class PSRegistry {
     public SoundEvent sound(String name) {
         Identifier id = Identifier.of(namespace, name);
         return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
+    }
+
+    //endregion
+
+    //region Point of Interests
+
+    public PointOfInterestType pointOfInterest(String name, Block... blocks) {
+        return this.pointOfInterest(name, 1, 1, blocks);
+    }
+
+    public PointOfInterestType pointOfInterest(String name, int ticketCount, int searchDistance, Block... blocks) {
+        return PointOfInterestHelper.register(Identifier.of(namespace, name), ticketCount, searchDistance, blocks);
     }
 
     //endregion
