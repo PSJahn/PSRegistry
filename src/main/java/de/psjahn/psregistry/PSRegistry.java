@@ -1,5 +1,6 @@
 package de.psjahn.psregistry;
 
+import com.google.common.collect.ImmutableSet;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -17,16 +18,21 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.poi.PointOfInterestType;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
 public class PSRegistry {
@@ -45,6 +51,15 @@ public class PSRegistry {
     private static boolean isIdentifierInvalid(Identifier identifier) {
         if(identifier.equals(Identifier.ofVanilla("air"))) {
             LOGGER.error("Couldn't get an identifier whilst registering a block item!");
+            return true;
+        }
+        return false;
+    }
+
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+    private static boolean isPoiKeyInvalid(Optional<RegistryKey<PointOfInterestType>> optionalKey) {
+        if(optionalKey.isEmpty()) {
+            LOGGER.error("Couldn't get a registry key whilst registering a villager profession!");
             return true;
         }
         return false;
@@ -181,6 +196,27 @@ public class PSRegistry {
 
     public PointOfInterestType pointOfInterest(String name, int ticketCount, int searchDistance, Block... blocks) {
         return PointOfInterestHelper.register(Identifier.of(namespace, name), ticketCount, searchDistance, blocks);
+    }
+
+    //endregion
+
+    //region Villager Professions
+
+    public VillagerProfession villagerProfession(String name, PointOfInterestType workstation, @Nullable SoundEvent sounds) {
+        return this.villagerProfession(name, workstation, ImmutableSet.of(), ImmutableSet.of(), sounds);
+    }
+
+    public VillagerProfession villagerProfession(String name, PointOfInterestType workstation, ImmutableSet<Block> secondaryJobSites, ImmutableSet<Item> gatherableItems, @Nullable SoundEvent sounds) {
+        Optional<RegistryKey<PointOfInterestType>> key = Registries.POINT_OF_INTEREST_TYPE.getKey(workstation);
+        return isPoiKeyInvalid(key) ? null : this.villagerProfession(name, key.orElse(null), secondaryJobSites, gatherableItems, sounds);
+    }
+
+    public VillagerProfession villagerProfession(String name, RegistryKey<PointOfInterestType> workstation, ImmutableSet<Block> secondaryJobSites, ImmutableSet<Item> gatherableItems, @Nullable SoundEvent sounds) {
+        return Registry.register(Registries.VILLAGER_PROFESSION, Identifier.of(namespace, name), new VillagerProfession(name, e -> e.matchesKey(workstation), e -> e.matchesKey(workstation), gatherableItems, secondaryJobSites, sounds));
+    }
+
+    public VillagerProfession villagerProfession(String name, Predicate<RegistryEntry<PointOfInterestType>> workstation, ImmutableSet<Block> secondaryJobSites, ImmutableSet<Item> gatherableItems, @Nullable SoundEvent sounds) {
+        return Registry.register(Registries.VILLAGER_PROFESSION, Identifier.of(namespace, name), new VillagerProfession(name, workstation, workstation, gatherableItems, secondaryJobSites, sounds));
     }
 
     //endregion
