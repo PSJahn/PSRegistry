@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "id": "psregistry",
+  "version": "${version}",
+  "name": "PSRegistry",
+  "authors": [ "PSJahn" ]
+}
