@@ -21,6 +21,9 @@ public class ModRegistry {
   public static final Block NEW_BLOCK = reg.block("new_block");
   public static final Block BLOCK_WITH_SETTINGS = reg.block("block_with_settings", s -> s.dropsNothing());
 
+  //Custom Block class example
+  public static final CustomBlock CUSTOM_BLOCK = reg.block("custom_block", s->s, CustomBlock::new);
+
   //Some types don't even need any identifiers
   public static final Item BLOCK_ITEM = reg.blockItem(NEW_BLOCK);
 
@@ -42,6 +45,8 @@ public class ModRegistry {
   public static Block BLOCK_WITH_SETTINGS = Registry.register(Registries.BLOCK, Identifier.of(MyMod.MOD_ID, "block_with_settings"), new Block(AbstractBlock.Settings.create().dropsNothing()));
 
   public static Item BLOCK_ITEM = Registry.register(Registries.ITEM, Identifier.of(MyMod.MOD_ID, "new_block"), new BlockItem(NEW_BLOCK, new Item.Settings()));
+
+  public static final CustomBlock CUSTOM_BLOCK = Registry.register(Registries.BLOCK, Identifier.of(MyMod.MOD_ID, "custom_block"), new CustomBlock(AbstractBlock.Settings.create()));
 
   private static final RegistryKey<ItemGroup> MOD_GROUP_KEY = RegistryKey.of(RegistryKeys.ITEM_GROUP, Identifier.of(MyMod.MOD_ID, "mod_group"));
   public static ItemGroup MOD_GROUP = FabricItemGroup.builder().displayName(Text.literal("This is so tedious!")).icon(() -> new ItemStack(SIMPLE_ITEM)).build();
