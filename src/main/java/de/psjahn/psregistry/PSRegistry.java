@@ -19,6 +19,9 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.resource.featuretoggle.FeatureSet;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -217,6 +220,18 @@ public class PSRegistry {
 
     public VillagerProfession villagerProfession(String name, Predicate<RegistryEntry<PointOfInterestType>> workstation, ImmutableSet<Block> secondaryJobSites, ImmutableSet<Item> gatherableItems, @Nullable SoundEvent sounds) {
         return Registry.register(Registries.VILLAGER_PROFESSION, Identifier.of(namespace, name), new VillagerProfession(name, workstation, workstation, gatherableItems, secondaryJobSites, sounds));
+    }
+
+    //endregion
+
+    //region Screen Handler Types
+
+    public <T extends ScreenHandler> ScreenHandlerType<T> screenHandlerType(String name, ScreenHandlerType.Factory<T> screenHandlerFactory) {
+        return this.screenHandlerType(name, screenHandlerFactory, FeatureSet.empty());
+    }
+
+    public <T extends ScreenHandler> ScreenHandlerType<T> screenHandlerType(String name, ScreenHandlerType.Factory<T> screenHandlerFactory, FeatureSet requiredFeatures) {
+        return Registry.register(Registries.SCREEN_HANDLER, Identifier.of(namespace, name), new ScreenHandlerType<>(screenHandlerFactory, requiredFeatures));
     }
 
     //endregion
