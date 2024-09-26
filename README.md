@@ -24,11 +24,14 @@ public class ModRegistry {
   //Custom Block class example
   public static final CustomBlock CUSTOM_BLOCK = reg.block("custom_block", s->s, CustomBlock::new);
 
+  //Custom Item class example
+  public static final CustomItem CUSTOM_ITEM = reg.block("custom_item", s->s, CustomItem::new);
+
   //Some types don't even need any identifiers
   public static final Item BLOCK_ITEM = reg.blockItem(NEW_BLOCK);
 
   //Especially Item Groups are made a lot simpler with this library (See the vanilla implementation below).
-  public static final ItemGroup MOD_GROUP = reg.itemGroup("mod_group", Text.literal("My new group!"), NEW_ITEM, ITEM_WITH_SETTINGS, BLOCK_ITEM);
+  public static final ItemGroup MOD_GROUP = reg.itemGroup("mod_group", Text.literal("My new group!"), NEW_ITEM, ITEM_WITH_SETTINGS, BLOCK_ITEM, CUSTOM_ITEM);
 
   public static void initialize() { }
 }
@@ -47,6 +50,7 @@ public class ModRegistry {
   public static Item BLOCK_ITEM = Registry.register(Registries.ITEM, Identifier.of(MyMod.MOD_ID, "new_block"), new BlockItem(NEW_BLOCK, new Item.Settings()));
 
   public static final CustomBlock CUSTOM_BLOCK = Registry.register(Registries.BLOCK, Identifier.of(MyMod.MOD_ID, "custom_block"), new CustomBlock(AbstractBlock.Settings.create()));
+  public static final CustomBlock CUSTOM_ITEM = Registry.register(Registries.ITEM, Identifier.of(MyMod.MOD_ID, "custom_item"), new CustomItem(new Item.Settings());
 
   private static final RegistryKey<ItemGroup> MOD_GROUP_KEY = RegistryKey.of(RegistryKeys.ITEM_GROUP, Identifier.of(MyMod.MOD_ID, "mod_group"));
   public static ItemGroup MOD_GROUP = FabricItemGroup.builder().displayName(Text.literal("This is so tedious!")).icon(() -> new ItemStack(SIMPLE_ITEM)).build();
@@ -55,6 +59,7 @@ public class ModRegistry {
     ItemGroupEvents.modifyEntriesEvent(MOD_GROUP_KEY).register(itemGroup -> {
       itemGroup.add(new ItemStack(ITEM_WITH_SETTINGS));
       itemGroup.add(new ItemStack(BLOCK_ITEM));
+      itemGroup.add(new ItemStack(CUSTOM_ITEM));
     });
   }
 }
@@ -105,6 +110,7 @@ repositories {
 And add the dependency like this:
 ```gradle
 dependencies {
-  modImplementation "com.github.PSJahn:PSRegistry:1.2.8"
+  modImplementation "com.github.PSJahn:PSRegistry:1.2.9"
+  include "com.github.PSJahn:PSRegistry:1.2.9"
 }
 ```
