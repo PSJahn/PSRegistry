@@ -71,14 +71,18 @@ public class PSRegistry {
     //region Items
 
     public Item item(String name) {
-        return this.item(name, s -> s);
+        return this.item(name, s -> s, Item::new);
     }
 
     public Item item(String name, Function<Item.Settings, Item.Settings> settings) {
-        return this.item(name, new Item(settings.apply(new Item.Settings())));
+        return this.item(name, settings, Item::new);
     }
 
-    public Item item(String name, Item item) {
+    public <T extends Item> T item(String name, Function<Item.Settings, Item.Settings> settings, Function<Item.Settings, T> constructor) {
+        return this.item(name, constructor.apply(settings.apply(new Item.Settings())));
+    }
+
+    public <T extends Item> T item(String name, T item) {
         return Registry.register(Registries.ITEM, Identifier.of(namespace, name), item);
     }
 
