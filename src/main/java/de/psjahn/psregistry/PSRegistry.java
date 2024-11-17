@@ -7,9 +7,6 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -79,11 +76,12 @@ public class PSRegistry {
     }
 
     public <T extends Item> T item(String name, Function<Item.Settings, Item.Settings> settings, Function<Item.Settings, T> constructor) {
-        return this.item(name, constructor.apply(settings.apply(new Item.Settings())));
+        RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(namespace, name));
+        return this.item(key, constructor.apply(settings.apply(new Item.Settings()).registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(namespace, name)))));
     }
 
-    public <T extends Item> T item(String name, T item) {
-        return Registry.register(Registries.ITEM, Identifier.of(namespace, name), item);
+    public <T extends Item> T item(RegistryKey<Item> key, T item) {
+        return Registry.register(Registries.ITEM, key, item);
     }
 
     public Item blockItem(Block block) {
@@ -101,7 +99,8 @@ public class PSRegistry {
     }
 
     public Item blockItem(String name, Block block, Function<Item.Settings, Item.Settings> settings) {
-        return Registry.register(Registries.ITEM, Identifier.of(namespace, name), new BlockItem(block, settings.apply(new Item.Settings())));
+        RegistryKey<Item> key = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(namespace, name));
+        return Registry.register(Registries.ITEM, key, new BlockItem(block, settings.apply(new Item.Settings()).useBlockPrefixedTranslationKey().registryKey(key)));
     }
 
     //endregion
@@ -140,18 +139,19 @@ public class PSRegistry {
     }
 
     public <T extends Block> T block(String name, Function<AbstractBlock.Settings, AbstractBlock.Settings> settings, Function<AbstractBlock.Settings, T> constructor) {
-        return this.block(name, constructor.apply(settings.apply(AbstractBlock.Settings.create())));
+        RegistryKey<Block> key = RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(namespace, name));
+        return this.block(key, constructor.apply(settings.apply(AbstractBlock.Settings.create()).registryKey(key)));
     }
 
-    public <T extends Block> T block(String name, T block) {
-        return Registry.register(Registries.BLOCK, Identifier.of(namespace, name), block);
+    public <T extends Block> T block(RegistryKey<Block> key, T block) {
+        return Registry.register(Registries.BLOCK, key, block);
     }
 
     //endregion
 
-    //region Block Entity Types
+    //region TODO Block Entity Types
 
-    public BlockEntityType<?> blockEntityType(BlockEntityType.BlockEntityFactory<?> factory, Block block) {
+    /*public BlockEntityType<?> blockEntityType(BlockEntityType.BlockEntityFactory<?> factory, Block block) {
         Identifier id = Registries.BLOCK.getId(block);
         if(isIdentifierInvalid(id)) return null;
         return this.blockEntityType(id.getPath(), BlockEntityType.Builder.create(factory, block).build());
@@ -163,12 +163,12 @@ public class PSRegistry {
 
     public BlockEntityType<?> blockEntityType(String name, BlockEntityType<?> blockEntityType) {
         return Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(namespace, name), blockEntityType);
-    }
+    }*/
 
     //endregion
 
-    //region Entity Types
-    public EntityType<?> entityType(String name, EntityType.EntityFactory<?> factory, SpawnGroup spawnGroup) {
+    //region TODO Entity Types
+    /*public EntityType<?> entityType(String name, EntityType.EntityFactory<?> factory, SpawnGroup spawnGroup) {
         return this.entityType(name, factory, spawnGroup, s -> s);
     }
 
@@ -182,7 +182,7 @@ public class PSRegistry {
 
     public EntityType<?> entityType(String name, EntityType<?> entityType) {
         return Registry.register(Registries.ENTITY_TYPE, Identifier.of(namespace, name), entityType);
-    }
+    }*/
 
     //endregion
 
