@@ -7,7 +7,7 @@ PSRegistry is a library which simplifies the process of registering Items, Block
 
 <br>
 
-### With PSRegistry
+### Example usage
 ```java
 public class ModRegistry {
   private static final PSRegistry reg = PSRegistry.of(MyMod.MOD_ID);
@@ -30,41 +30,12 @@ public class ModRegistry {
   //Some types don't even need any identifiers
   public static final Item BLOCK_ITEM = reg.blockItem(NEW_BLOCK);
 
-  //Especially Item Groups are made a lot simpler with this library (See the vanilla implementation below).
+  //Especially Item Groups are made a lot simpler with this library
   public static final ItemGroup MOD_GROUP = reg.itemGroup("mod_group", Text.literal("My new group!"), NEW_ITEM, ITEM_WITH_SETTINGS, BLOCK_ITEM, CUSTOM_ITEM);
 
   public static void initialize() { }
 }
 ```
-
-### Without PSRegistry
-```java
-public class ModRegistry {
-  public static Item SIMPLE_ITEM = Registry.register(Registries.ITEM, Identifier.of(MyMod.MOD_ID, "simple_item"), new Item(new Item.Settings()));
-
-  public static Item ITEM_WITH_SETTINGS = Registry.register(Registries.ITEM, Identifier.of(MyMod.MOD_ID, "item_with_settings"), new Item(new Item.Settings().maxCount(1).fireproof()));
-
-  public static Block NEW_BLOCK = Registry.register(Registries.BLOCK, Identifier.of(MyMod.MOD_ID, "new_block"), new Block(AbstractBlock.Settings.create()));
-  public static Block BLOCK_WITH_SETTINGS = Registry.register(Registries.BLOCK, Identifier.of(MyMod.MOD_ID, "block_with_settings"), new Block(AbstractBlock.Settings.create().dropsNothing()));
-
-  public static Item BLOCK_ITEM = Registry.register(Registries.ITEM, Identifier.of(MyMod.MOD_ID, "new_block"), new BlockItem(NEW_BLOCK, new Item.Settings()));
-
-  public static final CustomBlock CUSTOM_BLOCK = Registry.register(Registries.BLOCK, Identifier.of(MyMod.MOD_ID, "custom_block"), new CustomBlock(AbstractBlock.Settings.create()));
-  public static final CustomBlock CUSTOM_ITEM = Registry.register(Registries.ITEM, Identifier.of(MyMod.MOD_ID, "custom_item"), new CustomItem(new Item.Settings());
-
-  private static final RegistryKey<ItemGroup> MOD_GROUP_KEY = RegistryKey.of(RegistryKeys.ITEM_GROUP, Identifier.of(MyMod.MOD_ID, "mod_group"));
-  public static ItemGroup MOD_GROUP = FabricItemGroup.builder().displayName(Text.literal("This is so tedious!")).icon(() -> new ItemStack(SIMPLE_ITEM)).build();
-
-  public static void initialize() {
-    ItemGroupEvents.modifyEntriesEvent(MOD_GROUP_KEY).register(itemGroup -> {
-      itemGroup.add(new ItemStack(ITEM_WITH_SETTINGS));
-      itemGroup.add(new ItemStack(BLOCK_ITEM));
-      itemGroup.add(new ItemStack(CUSTOM_ITEM));
-    });
-  }
-}
-```
-That's more than twice as many characters! (214% more, excluding comments)
 
 <br>
 
@@ -110,7 +81,7 @@ repositories {
 And add the dependency like this:
 ```gradle
 dependencies {
-  modImplementation "com.github.PSJahn:PSRegistry:1.2.9"
-  include "com.github.PSJahn:PSRegistry:1.2.9"
+  modImplementation "com.github.PSJahn:PSRegistry:1.3.0"
+  include "com.github.PSJahn:PSRegistry:1.3.0"
 }
 ```
