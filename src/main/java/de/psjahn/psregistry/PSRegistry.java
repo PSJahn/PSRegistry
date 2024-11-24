@@ -7,6 +7,8 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.world.poi.PointOfInterestHelper;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -167,8 +169,8 @@ public class PSRegistry {
 
     //endregion
 
-    //region TODO Entity Types
-    /*public EntityType<?> entityType(String name, EntityType.EntityFactory<?> factory, SpawnGroup spawnGroup) {
+    //region
+    public EntityType<?> entityType(String name, EntityType.EntityFactory<?> factory, SpawnGroup spawnGroup) {
         return this.entityType(name, factory, spawnGroup, s -> s);
     }
 
@@ -177,12 +179,13 @@ public class PSRegistry {
     }
 
     public EntityType<?> entityType(String name, EntityType.Builder<?> builder) {
-        return this.entityType(name, builder.build(name));
+        RegistryKey<EntityType<?>> key = RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(namespace, name));
+        return this.entityType(key, builder.build(key));
     }
 
-    public EntityType<?> entityType(String name, EntityType<?> entityType) {
-        return Registry.register(Registries.ENTITY_TYPE, Identifier.of(namespace, name), entityType);
-    }*/
+    public EntityType<?> entityType(RegistryKey<EntityType<?>> key, EntityType<?> entityType) {
+        return Registry.register(Registries.ENTITY_TYPE, key, entityType);
+    }
 
     //endregion
 
